@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>S1 Team A Performance Dashboard</title>
+
+    <style>
+
+        /* =========================
+           GENERAL PAGE
+        ========================= */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1f4e78;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #333333;
+            margin-top: 30px;
+        }
+
+        /* =========================
+           WEEK SELECTOR
+           ========================= */
+
+        .week-selector {
+            margin: 20px 0;
+        }
+
+        .week-selector label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .week-selector select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #cccccc;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        /* =========================
+           KPI CARDS
+           ========================= */
+
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: white;
+            width: 200px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+            text-align: center;
+        }
+
+        .card h3 {
+            color: #666666;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f4e78;
+            margin: 12px 0 0 0;
+        }
+
+        /* =========================
+           TABLE
+           ========================= */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 950px;
+            border-collapse: collapse;
+            background-color: white;
+            margin-top: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background-color: #1f4e78;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #dddddd;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        /* =========================
+           RANK
+           ========================= */
+
+        .rank {
+            font-weight: bold;
+        }
+
+        /* =========================
+           REPAYMENT COLORS
+           ========================= */
+
+        .good {
+            color: green;
+            font-weight: bold;
+        }
+
+        .low {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* =========================
+           TOP PERFORMER
+           ========================= */
+
+        .top-performer {
+            background-color: #eaf7ea;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =========================
+         TITLE
+         ========================= -->
+
+    <h1>S1 TEAM A PERFORMANCE DASHBOARD</h1>
+
+
+    <!-- =========================
+         WEEK SELECTOR
+         ========================= -->
+
+    <div class="week-selector">
+
+        <label for="week">Select Week:</label>
+
+        <select id="week">
+
+            <option value="Week 1">Week 1</option>
+            <option value="Week 2">Week 2</option>
+            <option value="Week 3">Week 3</option>
+            <option value="Week 4">Week 4</option>
+
+        </select>
+
+    </div>
+
+
+    <!-- =========================
+         KPI SUMMARY
+         ========================= -->
+
+    <h2>Team Summary</h2>
+
+    <div class="dashboard">
+
+        <div class="card">
+
+            <h3>Total Agents</h3>
+
+            <p id="totalAgents">11</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total Call Dials</h3>
+
+            <p id="totalDials">0</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total SMS</h3>
+
+            <p id="totalSMS">0</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total Allocation</h3>
+
+            <p id="totalAllocation">0</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total Repaid</h3>
+
+            <p id="totalRepaid">0</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         AGENT PERFORMANCE
+         ========================= -->
+
+    <h2>Agent Performance</h2>
+
+    <div class="table-container">
+
+        <table id="agentTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Rank</th>
+
+                    <th>Agent</th>
+
+                    <th>Call Dials</th>
+
+                    <th>Talk Time</th>
+
+                    <th>SMS</th>
+
+                    <th>Allocation</th>
+
+                    <th>Repaids</th>
+
+                    <th>Repayment %</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="agentBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+         ========================= -->
+
+    <script>
+
+        /* =========================
+           ACTUAL TEAM DATA
+           ========================= */
+
+        const teamData = [
+
+            {
+                name: "Sherlyn",
+                dials: 2101,
+                talkTime: "2h35m26s",
+                sms: 10445,
+                allocation: 141,
+                repaid: 58,
+                repayment: 41.13
+            },
+
+            {
+                name: "Ralph",
+                dials: 1894,
+                talkTime: "2h29m22s",
+                sms: 7176,
+                allocation: 166,
+                repaid: 61,
+                repayment: 36.74
+            },
+
+            {
+                name: "Joey Mae",
+                dials: 2337,
+                talkTime: "3h44m32s",
+                sms: 13331,
+                allocation: 166,
+                repaid: 60,
+                repayment: 36.14
+            },
+
+            {
+                name: "Lovely Rose",
+                dials: 2477,
+                talkTime: "3h25m37s",
+                sms: 12369,
+                allocation: 170,
+                repaid: 60,
+                repayment: 35.29
+            },
+
+            {
+                name: "Natalie",
+                dials: 2065,
+                talkTime: "4h16m12s",
+                sms: 11299,
+                allocation: 167,
+                repaid: 58,
+                repayment: 34.73
+            },
+
+            {
+                name: "Gerleah",
+                dials: 2874,
+                talkTime: "4h4m22s",
+                sms: 11498,
+                allocation: 170,
+                repaid: 58,
+                repayment: 34.11
+            },
+
+            {
+                name: "Rizza Julio",
+                dials: 2433,
+                talkTime: "1h38m20s",
+                sms: 5138,
+                allocation: 166,
+                repaid: 54,
+                repayment: 32.53
+            },
+
+            {
+                name: "Mary Angelyn",
+                dials: 3656,
+                talkTime: "3h34m20s",
+                sms: 8757,
+                allocation: 114,
+                repaid: 37,
+                repayment: 32.45
+            },
+
+            {
+                name: "Meliza",
+                dials: 2310,
+                talkTime: "3h21m59s",
+                sms: 10236,
+                allocation: 167,
+                repaid: 54,
+                repayment: 32.33
+            },
+
+            {
+                name: "Edcell",
+                dials: 2450,
+                talkTime: "3h56m42s",
+                sms: 10812,
+                allocation: 165,
+                repaid: 53,
+                repayment: 32.12
+            },
+
+            {
+                name: "Robelle",
+                dials: 2145,
+                talkTime: "4h52m33s",
+                sms: 12229,
+                allocation: 157,
+                repaid: 43,
+                repayment: 27.38
+            }
+
+        ];
+
+
+        /* =========================
+           DISPLAY DATA
+           ========================= */
+
+        function loadDashboard() {
+
+            const tableBody =
+                document.getElementById("agentBody");
+
+            tableBody.innerHTML = "";
+
+
+            /* SORT BY FINAL REPAYMENT % */
+
+            const sortedAgents =
+                [...teamData].sort(
+                    (a, b) =>
+                        b.repayment - a.repayment
+                );
+
+
+            /* =========================
+               CREATE TABLE ROWS
+               ========================= */
+
+            sortedAgents.forEach(
+                function(agent, index) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    /* TOP PERFORMER */
+
+                    if (index === 0) {
+
+                        row.classList.add(
+                            "top-performer"
+                        );
+
+                    }
+
+
+                    /* REPAYMENT COLOR */
+
+                    const repaymentClass =
+                        agent.repayment >= 30
+                            ? "good"
+                            : "low";
+
+
+                    row.innerHTML = `
+
+                        <td class="rank">
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${agent.name}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${agent.dials.toLocaleString()}
+                        </td>
+
+                        <td>
+                            ${agent.talkTime}
+                        </td>
+
+                        <td>
+                            ${agent.sms.toLocaleString()}
+                        </td>
+
+                        <td>
+                            ${agent.allocation.toLocaleString()}
+                        </td>
+
+                        <td>
+                            ${agent.repaid.toLocaleString()}
+                        </td>
+
+                        <td class="${repaymentClass}">
+                            ${agent.repayment.toFixed(2)}%
+                        </td>
+
+                    `;
+
+
+                    tableBody.appendChild(row);
+
+                }
+            );
+
+
+            /* =========================
+               TEAM TOTALS
+               ========================= */
+
+            const totalDials =
+                teamData.reduce(
+                    (sum, agent) =>
+                        sum + agent.dials,
+                    0
+                );
+
+
+            const totalSMS =
+                teamData.reduce(
+                    (sum, agent) =>
+                        sum + agent.sms,
+                    0
+                );
+
+
+            const totalAllocation =
+                teamData.reduce(
+                    (sum, agent) =>
+                        sum + agent.allocation,
+                    0
+                );
+
+
+            const totalRepaid =
+                teamData.reduce(
+                    (sum, agent) =>
+                        sum + agent.repaid,
+                    0
+                );
+
+
+            /* =========================
+               UPDATE KPI CARDS
+               ========================= */
+
+            document.getElementById(
+                "totalAgents"
+            ).textContent =
+                teamData.length;
+
+
+            document.getElementById(
+                "totalDials"
+            ).textContent =
+                totalDials.toLocaleString();
+
+
+            document.getElementById(
+                "totalSMS"
+            ).textContent =
+                totalSMS.toLocaleString();
+
+
+            document.getElementById(
+                "totalAllocation"
+            ).textContent =
+                totalAllocation.toLocaleString();
+
+
+            document.getElementById(
+                "totalRepaid"
+            ).textContent =
+                totalRepaid.toLocaleString();
+
+        }
+
+
+        /* =========================
+           INITIAL LOAD
+           ========================= */
+
+        loadDashboard();
+
+
+        /* =========================
+           WEEK SELECTOR
+           ========================= */
+
+        document.getElementById(
+            "week"
+        ).addEventListener(
+            "change",
+            function() {
+
+                /*
+                 For now, Week 1 contains
+                 the actual data you provided.
+
+                 We will add Week 2, Week 3,
+                 and Week 4 data later.
+                */
+
+                loadDashboard();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
