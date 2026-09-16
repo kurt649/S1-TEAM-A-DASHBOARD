@@ -350,6 +350,28 @@ tbody tr:hover {
     font-weight: bold;
 }
 
+.monthly-selector {
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.team-monthly-table th {
+    background: #1f2937;
+}
+
+.team-overall {
+    background: #eef2f7;
+    font-weight: bold;
+}
+
+.team-overall td {
+    font-weight: bold;
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -618,16 +640,95 @@ tbody tr:hover {
 
             <h2>Monthly Performance</h2>
 
-            <div style="color:#6b7280;margin-top:5px;">
+            <div id="monthlyDate"
+                 style="color:#6b7280;margin-top:5px;">
                 S1 Team A — Monthly Collection Data
             </div>
+
+        </div>
+
+
+        <select id="monthSelector"
+                class="monthly-selector"
+                onchange="renderMonthly()">
+
+            <option value="august">
+                August 2026
+            </option>
+
+            <option value="september" selected>
+                September 2026
+            </option>
+
+            <option value="october">
+                October 2026
+            </option>
+
+            <option value="november">
+                November 2026
+            </option>
+
+            <option value="december">
+                December 2026
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- TEAM OVERALL -->
+
+    <div class="card">
+
+        <h3 id="teamPerformanceTitle">
+            Team Performance — September 2026
+        </h3>
+
+        <div class="table-wrapper">
+
+            <table class="team-monthly-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Team</th>
+
+                        <th>Total Cases</th>
+
+                        <th>Total Allocation Amount</th>
+
+                        <th>Repaid Cases</th>
+
+                        <th>Repaid Amount</th>
+
+                        <th>Collection Rate<br>Cases</th>
+
+                        <th>Collection Rate<br>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="teamMonthlyTable">
+
+                </tbody>
+
+            </table>
 
         </div>
 
     </div>
 
 
+    <!-- AGENT MONTHLY PERFORMANCE -->
+
     <div class="card">
+
+        <h3 id="agentPerformanceTitle">
+            Agent Monthly Performance — September 1–16, 2026
+        </h3>
 
         <div class="table-wrapper">
 
@@ -1599,119 +1700,379 @@ const weeklyData = {
    MONTHLY DATA
 ===================================================== */
 
-const monthlyData = [
+const monthlyData = {
 
-    {
-        name: "Sherlyn",
-        cases: 303,
-        allocation: 1248532.84,
-        repaidCases: 112,
-        repaidAmount: 501317.32,
-        casesRate: 36.96,
-        amountRate: 40.15
+    /* =================================================
+       AUGUST 2026
+    ================================================= */
+
+    august: {
+
+        title: "August 2026",
+
+        period: "August 2026",
+
+        team: {
+
+            name: "S1 TEAM A OVERALL DATA",
+
+            cases: 8113,
+
+            allocation: 33698440.48,
+
+            repaidCases: 2819,
+
+            repaidAmount: 10930500.23,
+
+            casesRate: 34.75,
+
+            amountRate: 32.44
+
+        },
+
+        agents: [
+
+            {
+                name: "anjanitte.S1",
+                cases: 101,
+                allocation: 389227.15,
+                repaidCases: 38,
+                repaidAmount: 150668.51,
+                casesRate: 37.62,
+                amountRate: 38.70
+            },
+
+            {
+                name: "robelle",
+                cases: 950,
+                allocation: 3951062.86,
+                repaidCases: 351,
+                repaidAmount: 1400546.04,
+                casesRate: 36.94,
+                amountRate: 35.44
+            },
+
+            {
+                name: "meliza",
+                cases: 1026,
+                allocation: 4252522.38,
+                repaidCases: 379,
+                repaidAmount: 1408142.20,
+                casesRate: 36.93,
+                amountRate: 33.11
+            },
+
+            {
+                name: "joey.mae",
+                cases: 898,
+                allocation: 3630273.44,
+                repaidCases: 321,
+                repaidAmount: 1273503.78,
+                casesRate: 35.74,
+                amountRate: 35.08
+            },
+
+            {
+                name: "edcell",
+                cases: 1011,
+                allocation: 4257490.25,
+                repaidCases: 360,
+                repaidAmount: 1374591.00,
+                casesRate: 35.60,
+                amountRate: 32.28
+            },
+
+            {
+                name: "gerleah",
+                cases: 1025,
+                allocation: 4419976.14,
+                repaidCases: 359,
+                repaidAmount: 1539122.22,
+                casesRate: 35.02,
+                amountRate: 34.82
+            },
+
+            {
+                name: "rizza.julio",
+                cases: 935,
+                allocation: 3779576.89,
+                repaidCases: 320,
+                repaidAmount: 1102696.98,
+                casesRate: 34.22,
+                amountRate: 29.17
+            },
+
+            {
+                name: "lovely.rose",
+                cases: 940,
+                allocation: 3874173.74,
+                repaidCases: 310,
+                repaidAmount: 1139321.84,
+                casesRate: 32.97,
+                amountRate: 29.40
+            },
+
+            {
+                name: "natalie",
+                cases: 993,
+                allocation: 4117515.37,
+                repaidCases: 313,
+                repaidAmount: 1271417.84,
+                casesRate: 31.52,
+                amountRate: 30.87
+            },
+
+            {
+                name: "jharmaine.S1",
+                cases: 138,
+                allocation: 608810.62,
+                repaidCases: 43,
+                repaidAmount: 149344.40,
+                casesRate: 31.15,
+                amountRate: 24.53
+            },
+
+            {
+                name: "dyhimie.S1",
+                cases: 94,
+                allocation: 404869.54,
+                repaidCases: 26,
+                repaidAmount: 121713.82,
+                casesRate: 27.65,
+                amountRate: 30.06
+            }
+
+        ]
+
     },
 
-    {
-        name: "Lovely Rose",
-        cases: 392,
-        allocation: 1602501.57,
-        repaidCases: 131,
-        repaidAmount: 515405.62,
-        casesRate: 33.41,
-        amountRate: 32.16
+
+    /* =================================================
+       SEPTEMBER 1–16, 2026
+    ================================================= */
+
+    september: {
+
+        title: "September 2026",
+
+        period: "September 1–16, 2026",
+
+        team: {
+
+            name: "S1 TEAM A OVERALL DATA",
+
+            cases: 5007,
+
+            allocation: 20188639.42,
+
+            repaidCases: 1564,
+
+            repaidAmount: 6255659.59,
+
+            casesRate: 31.24,
+
+            amountRate: 30.99
+
+        },
+
+        agents: [
+
+            {
+                name: "sherlyn",
+                cases: 333,
+                allocation: 1375908.22,
+                repaidCases: 121,
+                repaidAmount: 526612.52,
+                casesRate: 36.33,
+                amountRate: 38.27
+            },
+
+            {
+                name: "dyhimie.S1",
+                cases: 232,
+                allocation: 888088.01,
+                repaidCases: 82,
+                repaidAmount: 326128.59,
+                casesRate: 35.34,
+                amountRate: 36.72
+            },
+
+            {
+                name: "jharmaine.S1",
+                cases: 159,
+                allocation: 615039.73,
+                repaidCases: 56,
+                repaidAmount: 225570.25,
+                casesRate: 35.22,
+                amountRate: 36.67
+            },
+
+            {
+                name: "lovely.rose",
+                cases: 421,
+                allocation: 1699958.41,
+                repaidCases: 140,
+                repaidAmount: 548796.56,
+                casesRate: 33.25,
+                amountRate: 32.28
+            },
+
+            {
+                name: "joey.mae",
+                cases: 427,
+                allocation: 1688505.29,
+                repaidCases: 139,
+                repaidAmount: 545048.33,
+                casesRate: 32.55,
+                amountRate: 32.27
+            },
+
+            {
+                name: "edcell",
+                cases: 417,
+                allocation: 1661430.15,
+                repaidCases: 135,
+                repaidAmount: 519828.89,
+                casesRate: 32.37,
+                amountRate: 31.28
+            },
+
+            {
+                name: "gerleah",
+                cases: 418,
+                allocation: 1634676.48,
+                repaidCases: 131,
+                repaidAmount: 479640.81,
+                casesRate: 31.33,
+                amountRate: 29.34
+            },
+
+            {
+                name: "ralph",
+                cases: 409,
+                allocation: 1696270.21,
+                repaidCases: 128,
+                repaidAmount: 450539.09,
+                casesRate: 31.29,
+                amountRate: 26.56
+            },
+
+            {
+                name: "rizza.julio",
+                cases: 409,
+                allocation: 1710749.44,
+                repaidCases: 126,
+                repaidAmount: 445965.65,
+                casesRate: 30.80,
+                amountRate: 26.06
+            },
+
+            {
+                name: "anjanitte.S1",
+                cases: 272,
+                allocation: 1075544.39,
+                repaidCases: 81,
+                repaidAmount: 302301.80,
+                casesRate: 29.77,
+                amountRate: 28.10
+            },
+
+            {
+                name: "meliza",
+                cases: 424,
+                allocation: 1694656.38,
+                repaidCases: 124,
+                repaidAmount: 599549.88,
+                casesRate: 29.24,
+                amountRate: 35.37
+            },
+
+            {
+                name: "natalie",
+                cases: 415,
+                allocation: 1720633.20,
+                repaidCases: 119,
+                repaidAmount: 500637.87,
+                casesRate: 28.67,
+                amountRate: 29.09
+            },
+
+            {
+                name: "mary.angelyn",
+                cases: 277,
+                allocation: 1155207.83,
+                repaidCases: 77,
+                repaidAmount: 373740.22,
+                casesRate: 27.79,
+                amountRate: 32.35
+            },
+
+            {
+                name: "robelle",
+                cases: 407,
+                allocation: 1650229.76,
+                repaidCases: 106,
+                repaidAmount: 421438.13,
+                casesRate: 26.04,
+                amountRate: 25.53
+            }
+
+        ]
+
     },
 
-    {
-        name: "Edcell",
-        cases: 385,
-        allocation: 1529815.45,
-        repaidCases: 128,
-        repaidAmount: 492535.89,
-        casesRate: 33.24,
-        amountRate: 32.19
+
+    /* =================================================
+       OCTOBER 2026
+    ================================================= */
+
+    october: {
+
+        title: "October 2026",
+
+        period: "October 2026",
+
+        team: null,
+
+        agents: []
+
     },
 
-    {
-        name: "Joey Mae",
-        cases: 394,
-        allocation: 1499830.93,
-        repaidCases: 131,
-        repaidAmount: 511598.13,
-        casesRate: 33.24,
-        amountRate: 34.11
+
+    /* =================================================
+       NOVEMBER 2026
+    ================================================= */
+
+    november: {
+
+        title: "November 2026",
+
+        period: "November 2026",
+
+        team: null,
+
+        agents: []
+
     },
 
-    {
-        name: "Gerleah",
-        cases: 388,
-        allocation: 1520748.28,
-        repaidCases: 127,
-        repaidAmount: 471703.31,
-        casesRate: 32.73,
-        amountRate: 31.01
-    },
 
-    {
-        name: "Ralph",
-        cases: 382,
-        allocation: 1582286.61,
-        repaidCases: 124,
-        repaidAmount: 429599.33,
-        casesRate: 32.46,
-        amountRate: 27.15
-    },
+    /* =================================================
+       DECEMBER 2026
+    ================================================= */
 
-    {
-        name: "Rizza Julio",
-        cases: 381,
-        allocation: 1557724.04,
-        repaidCases: 120,
-        repaidAmount: 428170.27,
-        casesRate: 31.49,
-        amountRate: 27.48
-    },
+    december: {
 
-    {
-        name: "Natalie",
-        cases: 385,
-        allocation: 1600682.90,
-        repaidCases: 112,
-        repaidAmount: 470013.17,
-        casesRate: 29.09,
-        amountRate: 29.36
-    },
+        title: "December 2026",
 
-    {
-        name: "Meliza",
-        cases: 396,
-        allocation: 1574639.38,
-        repaidCases: 114,
-        repaidAmount: 535433.91,
-        casesRate: 28.78,
-        amountRate: 34.00
-    },
+        period: "December 2026",
 
-    {
-        name: "Mary Angelyn",
-        cases: 245,
-        allocation: 1020429.33,
-        repaidCases: 69,
-        repaidAmount: 338004.58,
-        casesRate: 28.16,
-        amountRate: 33.12
-    },
+        team: null,
 
-    {
-        name: "Robelle",
-        cases: 375,
-        allocation: 1489916.76,
-        repaidCases: 101,
-        repaidAmount: 411523.63,
-        casesRate: 26.93,
-        amountRate: 27.62
+        agents: []
+
     }
 
-];
+};
 
 
 /* =====================================================
@@ -1751,6 +2112,23 @@ function showSection(sectionId, button) {
 function formatNumber(number) {
 
     return number.toLocaleString("en-US");
+
+}
+
+
+/* =====================================================
+   FORMAT PESO
+===================================================== */
+
+function formatPeso(number) {
+
+    return "₱" + number.toLocaleString(
+        "en-US",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
 
 }
 
@@ -1964,19 +2342,168 @@ function renderWeekly() {
 
 function renderMonthly() {
 
-    const table =
+    const selectedMonth =
+        document.getElementById("monthSelector").value;
+
+
+    const data =
+        monthlyData[selectedMonth];
+
+
+    const teamTable =
+        document.getElementById("teamMonthlyTable");
+
+
+    const agentTable =
         document.getElementById("monthlyTable");
 
 
-    table.innerHTML = "";
+    teamTable.innerHTML = "";
 
+    agentTable.innerHTML = "";
+
+
+    /* UPDATE TITLES */
+
+    document.getElementById("teamPerformanceTitle").textContent =
+        "Team Performance — " + data.title;
+
+
+    document.getElementById("agentPerformanceTitle").textContent =
+        "Agent Monthly Performance — " + data.period;
+
+
+    document.getElementById("monthlyDate").textContent =
+        "S1 Team A — Monthly Collection Data";
+
+
+    /* NO DATA MONTHS */
+
+    if (!data.team && data.agents.length === 0) {
+
+        teamTable.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty-week">
+
+                        <div class="icon">
+                            📅
+                        </div>
+
+                        <h3>
+                            No Data Yet
+                        </h3>
+
+                        <p>
+                            Monthly data for ${data.title}
+                            has not been entered yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        agentTable.innerHTML = `
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty-week">
+
+                        <div class="icon">
+                            👥
+                        </div>
+
+                        <h3>
+                            No Data Yet
+                        </h3>
+
+                        <p>
+                            Agent performance data for ${data.title}
+                            has not been entered yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    /* TEAM OVERALL */
+
+    const team = data.team;
+
+
+    const teamRow =
+        document.createElement("tr");
+
+
+    teamRow.classList.add("team-overall");
+
+
+    teamRow.innerHTML = `
+
+        <td>
+            ${team.name}
+        </td>
+
+        <td>
+            ${formatNumber(team.cases)}
+        </td>
+
+        <td>
+            ${formatPeso(team.allocation)}
+        </td>
+
+        <td>
+            ${formatNumber(team.repaidCases)}
+        </td>
+
+        <td>
+            ${formatPeso(team.repaidAmount)}
+        </td>
+
+        <td class="monthly-good">
+            ${team.casesRate.toFixed(2)}%
+        </td>
+
+        <td class="monthly-good">
+            ${team.amountRate.toFixed(2)}%
+        </td>
+
+    `;
+
+
+    teamTable.appendChild(teamRow);
+
+
+    /* SORT AGENTS BY CASES RATE */
 
     const sorted =
-        [...monthlyData]
+        [...data.agents]
         .sort((a, b) =>
             b.casesRate - a.casesRate
         );
 
+
+    /* AGENT TABLE */
 
     sorted.forEach((agent, index) => {
 
@@ -2006,6 +2533,12 @@ function renderMonthly() {
             : "monthly-low";
 
 
+        const amountClass =
+            agent.amountRate >= 30
+            ? "monthly-good"
+            : "monthly-low";
+
+
         row.innerHTML = `
 
             <td>
@@ -2021,13 +2554,7 @@ function renderMonthly() {
             </td>
 
             <td>
-                ₱${agent.allocation.toLocaleString(
-                    "en-US",
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                )}
+                ${formatPeso(agent.allocation)}
             </td>
 
             <td>
@@ -2035,27 +2562,21 @@ function renderMonthly() {
             </td>
 
             <td>
-                ₱${agent.repaidAmount.toLocaleString(
-                    "en-US",
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                )}
+                ${formatPeso(agent.repaidAmount)}
             </td>
 
             <td class="${casesClass}">
                 ${agent.casesRate.toFixed(2)}%
             </td>
 
-            <td class="monthly-good">
+            <td class="${amountClass}">
                 ${agent.amountRate.toFixed(2)}%
             </td>
 
         `;
 
 
-        table.appendChild(row);
+        agentTable.appendChild(row);
 
     });
 
