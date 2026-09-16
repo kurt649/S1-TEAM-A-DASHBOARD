@@ -1,26 +1,706 @@
-/* =========================
-   WATERMARK BACKGROUND (LOGO)
-========================= */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S1 TEAM A PERFORMANCE DASHBOARD</title>
 
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: 
+        radial-gradient(at 0% 0%, rgba(31, 41, 55, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+        linear-gradient(135deg, #eef2f7 0%, #e0e7ff 100%);
+    background-attachment: fixed;
+    color: #1f2937;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* =========================
+   PESOLOAN LOGO WATERMARK
+========================= */
 body::before {
     content: "";
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 45vw; /* Laki ng logo sa background */
-    height: 45vw;
+    width: 80vw;
+    height: 80vw;
     max-width: 500px;
     max-height: 500px;
-    
-    /* Palitan ang URL sa ibaba kung nakatabi sa local folder ang file (e.g. url('pesoloan-logo.png')) */
-    background-image: url('pesoloan-logo.png'); 
+    background-image: url("download.jfif");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
     
-    /* Translucency para hindi matakpan ang mga datos */
-    opacity: 0.05; 
+    /* Pinalinaw mula 0.06 patungong 0.25 */
+    opacity: 0.25; 
+    
     pointer-events: none;
     z-index: 0;
 }
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 28px 35px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 10;
+    border-bottom: 3px solid #3b82f6;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.header p {
+    margin: 8px 0 0;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* NAVIGATION */
+.nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 10px;
+    padding: 12px 25px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    overflow-x: auto;
+    position: relative;
+    z-index: 10;
+}
+
+.nav button {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    padding: 11px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #475569;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+}
+
+.nav button:hover {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.nav button.active {
+    background: #0f172a;
+    color: white;
+    border-color: #0f172a;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+}
+
+/* CONTAINER */
+.container {
+    padding: 25px;
+    max-width: 1600px;
+    margin: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.top-bar h2 { margin: 0; color: #0f172a; }
+
+.week-selector, .monthly-selector {
+    padding: 10px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    font-weight: bold;
+    color: #1e293b;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
+    outline: none;
+}
+
+/* KPI CARDS */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.kpi {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
+    border-left: 5px solid #2563eb;
+    transition: transform 0.2s ease;
+}
+
+.kpi:hover { transform: translateY(-3px); }
+
+.kpi-label {
+    color: #64748b;
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.kpi-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+/* CARDS & TABLES */
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.card h3 { margin-top: 0; color: #0f172a; }
+
+.table-wrapper { overflow-x: auto; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+thead { background: #0f172a; color: white; }
+
+th, td {
+    padding: 13px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 14px;
+}
+
+th { font-size: 12px; text-transform: uppercase; }
+
+tbody tr { transition: background-color 0.2s ease; }
+tbody tr:hover { background: rgba(241, 245, 249, 0.8); }
+
+.rank-1 { background: #fefce8; font-weight: bold; }
+.rank-1 td:first-child::before { content: "🥇 "; }
+.rank-2 td:first-child::before { content: "🥈 "; }
+.rank-3 td:first-child::before { content: "🥉 "; }
+
+.percent-good, .monthly-good {
+    background: #dcfce7; color: #15803d; border-radius: 6px; padding: 6px 10px; font-weight: bold;
+}
+
+.percent-low, .monthly-low {
+    background: #fee2e2; color: #b91c1c; border-radius: 6px; padding: 6px 10px; font-weight: bold;
+}
+
+.empty-week { text-align: center; padding: 60px 20px; color: #64748b; }
+.empty-week .icon { font-size: 50px; margin-bottom: 15px; }
+
+/* ANALYSIS */
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.analysis-box {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.analysis-box h3 { margin-top: 0; color: #0f172a; }
+.analysis-box ul { line-height: 1.8; color: #334155; }
+
+/* BOTTOM REPORT */
+.report-header {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.report-header h2 { margin: 0 0 5px; }
+.bottom-team { background: #fee2e2 !important; }
+.bottom-team td { font-weight: bold; color: #991b1b; }
+
+.note {
+    background: #fff7ed;
+    border-left: 5px solid #ea580c;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+    color: #7c2d12;
+}
+
+@media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .analysis-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>S1 TEAM A PERFORMANCE DASHBOARD</h1>
+    <p>Weekly & Monthly Collection Performance Monitoring</p>
+</div>
+
+<div class="nav">
+    <button class="nav-btn active" onclick="showSection('weekly', this)">📊 Weekly Performance</button>
+    <button class="nav-btn" onclick="showSection('monthly', this)">📅 Monthly Performance</button>
+    <button class="nav-btn" onclick="showSection('analysis', this)">📈 Weekly Analysis</button>
+    <button class="nav-btn" onclick="showSection('bottom', this)">🟥 Weekly Bottom Report</button>
+</div>
+
+<div class="container">
+
+<!-- WEEKLY PERFORMANCE -->
+<section id="weekly" class="section active">
+    <div class="top-bar">
+        <div>
+            <h2>Weekly Performance</h2>
+            <div id="weekDate" style="color:#64748b; margin-top:5px; font-weight: 500;"></div>
+        </div>
+
+        <select id="weekSelector" class="week-selector" onchange="renderWeekly()">
+            <option value="week1">Week 1 — September 5–11, 2026</option>
+            <option value="week2">Week 2 — September 12–16, 2026</option>
+            <option value="week3">Week 3 — September 16–22, 2026</option>
+            <option value="week4">Week 4 — September 23–29, 2026</option>
+        </select>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Total Agents</div><div class="kpi-value" id="totalAgents">0</div></div>
+        <div class="kpi"><div class="kpi-label">Total Call Dials</div><div class="kpi-value" id="totalDials">0</div></div>
+        <div class="kpi"><div class="kpi-label">Total SMS</div><div class="kpi-value" id="totalSMS">0</div></div>
+        <div class="kpi"><div class="kpi-label">Total Allocation</div><div class="kpi-value" id="totalAllocation">0</div></div>
+        <div class="kpi"><div class="kpi-label">Total Repaids</div><div class="kpi-value" id="totalRepaids">0</div></div>
+    </div>
+
+    <div class="card">
+        <h3>Agent Performance</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th><th>Agent</th><th>Call Dials</th><th>Talk Time</th><th>SMS</th><th>Allocation</th><th>Repaids</th><th>Repayment %</th>
+                    </tr>
+                </thead>
+                <tbody id="weeklyTable"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- MONTHLY PERFORMANCE -->
+<section id="monthly" class="section">
+    <div class="top-bar">
+        <div>
+            <h2>Monthly Performance</h2>
+            <div id="monthlyDate" style="color:#64748b; margin-top:5px; font-weight: 500;">S1 Team A — Monthly Collection Data</div>
+        </div>
+
+        <select id="monthSelector" class="monthly-selector" onchange="renderMonthly()">
+            <option value="august">August 2026</option>
+            <option value="september" selected>September 2026</option>
+            <option value="october">October 2026</option>
+            <option value="november">November 2026</option>
+            <option value="december">December 2026</option>
+        </select>
+    </div>
+
+    <div class="card">
+        <h3 id="teamPerformanceTitle">Team Performance — September 2026</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Team</th><th>Total Cases</th><th>Total Allocation Amount</th><th>Repaid Cases</th><th>Repaid Amount</th><th>Collection Rate<br>Cases</th><th>Collection Rate<br>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="teamMonthlyTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 id="agentPerformanceTitle">Agent Monthly Performance — September 1–16, 2026</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th><th>Agent</th><th>Total Cases</th><th>Allocation Amount</th><th>Repaid Cases</th><th>Repaid Amount</th><th>Collection Rate<br>Cases</th><th>Collection Rate<br>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="monthlyTable"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- WEEKLY ANALYSIS -->
+<section id="analysis" class="section">
+    <div class="top-bar">
+        <div>
+            <h2>Weekly Analysis</h2>
+            <div style="color:#64748b; margin-top:5px; font-weight: 500;">Team A Performance Focus</div>
+        </div>
+    </div>
+
+    <div class="analysis-grid">
+        <div class="analysis-box">
+            <h3>📞 Call Activity</h3>
+            <ul>
+                <li>Monitor daily call dials and talk time.</li>
+                <li>Focus on meaningful client conversations.</li>
+                <li>Maintain consistent calling activity.</li>
+                <li>Give additional coaching to agents with low talk time.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>💰 Collection Performance</h3>
+            <ul>
+                <li>Focus on repayment conversion.</li>
+                <li>Monitor the bottom performers closely.</li>
+                <li>Strengthen PTP conversion.</li>
+                <li>Prioritize DPD 4–7 accounts.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>📱 SMS Activity</h3>
+            <ul>
+                <li>Maintain consistent SMS blasts.</li>
+                <li>Prioritize primary and secondary numbers.</li>
+                <li>Monitor SMS response rate.</li>
+                <li>Follow up on clients who respond.</li>
+            </ul>
+        </div>
+        <div class="analysis-box">
+            <h3>👥 Attendance & Productivity</h3>
+            <ul>
+                <li>Strictly monitor attendance.</li>
+                <li>Leave requests should be advised ahead of time.</li>
+                <li>Sudden absences should be immediately communicated.</li>
+                <li>Maintain productivity consistency throughout the week.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- WEEKLY BOTTOM REPORT -->
+<section id="bottom" class="section">
+    <div class="report-header">
+        <h2>🟥 Weekly Bottom Report</h2>
+        <div style="color: #cbd5e1; font-size: 14px;">August 8–14, 2026</div>
+    </div>
+
+    <div class="card">
+        <h3>Team Collection Performance</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th><th>Team Leader</th><th>New Cases</th><th>Principal & Interest</th><th>Repaid Cases</th><th>Repaid Amount</th><th>Collection Rate<br>Cases</th><th>Collection Rate<br>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Jackie</td><td>2,334</td><td>10,100,344.96</td><td>890</td><td>4,111,655.32</td><td>38.13%</td><td>40.71%</td></tr>
+                    <tr><td>2</td><td>Mayorca</td><td>2,149</td><td>9,193,574.42</td><td>806</td><td>3,317,652.96</td><td>37.51%</td><td>36.09%</td></tr>
+                    <tr><td>3</td><td>Karl</td><td>2,208</td><td>10,366,752.10</td><td>916</td><td>3,504,822.25</td><td>36.38%</td><td>33.03%</td></tr>
+                    <tr><td>4</td><td>Franz</td><td>2,395</td><td>9,825,809.75</td><td>856</td><td>3,334,066.81</td><td>35.74%</td><td>33.93%</td></tr>
+                    <tr class="bottom-team"><td>5</td><td>Kurt — Team A</td><td>2,274</td><td>9,319,267.13</td><td>811</td><td>3,199,035.61</td><td>35.66%</td><td>34.33%</td></tr>
+                    <tr><td>-</td><td>Jiro — Team F</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0.00%</td><td>0.00%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="note">
+            <strong>Team A Analysis:</strong><br><br>
+            Team A ranked 5th among the reporting teams with collection data for the period.<br><br>
+            The main areas for improvement are collection conversion, attendance consistency, successful client connections, meaningful talk time, and repayment conversion.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Team Activity — August 8–14, 2026</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Team</th><th>Talk Time</th><th>Outbound Dials</th><th>Coverage</th><th>SMS Reply</th><th>Connection Rate</th><th>SMS Sent</th><th>SMS Success</th><th>Attendance</th><th>Active Agents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bottom-team"><td>Team A</td><td>34h31m43s</td><td>30,412</td><td>241.40%</td><td>1.39%</td><td>3.52%</td><td>118,939</td><td>93.67%</td><td>92.50%</td><td>10</td></tr>
+                    <tr><td>Team B</td><td>26h31m8s</td><td>31,818</td><td>224.76%</td><td>1.71%</td><td>3.62%</td><td>133,263</td><td>85.07%</td><td>97.75%</td><td>10</td></tr>
+                    <tr><td>Team C</td><td>34h47m20s</td><td>23,288</td><td>144.03%</td><td>1.69%</td><td>3.60%</td><td>115,234</td><td>95.63%</td><td>97.75%</td><td>9</td></tr>
+                    <tr><td>Team D</td><td>39h4m14s</td><td>32,028</td><td>240.99%</td><td>1.25%</td><td>3.21%</td><td>120,547</td><td>93.83%</td><td>94.74%</td><td>10</td></tr>
+                    <tr><td>Team E</td><td>38h11m</td><td>27,778</td><td>218.36%</td><td>1.03%</td><td>3.23%</td><td>116,270</td><td>95.27%</td><td>95.00%</td><td>8</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Attendance Issues — August 8–14, 2026</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Team</th><th>Attendance Issues</th><th>Total</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="bottom-team"><td>Team A</td><td>Aug 8 — Piolo;<br>Aug 9 — Rizza / Edcell / Joey / Edisson</td><td>5</td></tr>
+                    <tr><td>Team B</td><td>Aug 12 — Junell;<br>Aug 13 — Arianne;<br>Aug 14 — Marvin</td><td>3</td></tr>
+                    <tr><td>Team C</td><td>Aug 10 — Louise</td><td>1</td></tr>
+                    <tr><td>Team D</td><td>Aug 8 — Ron;<br>Aug 9 — Francis;<br>Aug 11 — Anclare HD;<br>Aug 12 — Christine</td><td>4</td></tr>
+                    <tr><td>Team E</td><td>Aug 9 — Venus;<br>Aug 10 — Gerome;<br>Aug 14 — Chessie HD</td><td>3</td></tr>
+                    <tr><td>Team F</td><td>None</td><td>0</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script>
+const weeklyData = {
+    week1: {
+        date: "September 5–11, 2026",
+        agents: [
+            { name: "Sherlyn", callDials: 2101, talkTime: "2h35m26s", sms: 10445, allocation: 141, repaids: 58, repayment: 41.13 },
+            { name: "Ralph", callDials: 1894, talkTime: "2h29m22s", sms: 7176, allocation: 166, repaids: 61, repayment: 36.74 },
+            { name: "Joey Mae", callDials: 2337, talkTime: "3h44m32s", sms: 13331, allocation: 166, repaids: 60, repayment: 36.14 },
+            { name: "Lovely Rose", callDials: 2477, talkTime: "3h25m37s", sms: 12369, allocation: 170, repaids: 60, repayment: 35.29 },
+            { name: "Natalie", callDials: 2065, talkTime: "4h16m12s", sms: 11299, allocation: 167, repaids: 58, repayment: 34.73 },
+            { name: "Gerleah", callDials: 2874, talkTime: "4h04m22s", sms: 11498, allocation: 170, repaids: 58, repayment: 34.11 },
+            { name: "Rizza Julio", callDials: 2433, talkTime: "1h38m20s", sms: 5138, allocation: 166, repaids: 54, repayment: 32.53 },
+            { name: "Mary Angelyn", callDials: 3656, talkTime: "3h34m20s", sms: 8757, allocation: 114, repaids: 37, repayment: 32.45 },
+            { name: "Meliza", callDials: 2310, talkTime: "3h21m59s", sms: 10236, allocation: 167, repaids: 54, repayment: 32.33 },
+            { name: "Edcell", callDials: 2450, talkTime: "3h56m42s", sms: 10812, allocation: 165, repaids: 53, repayment: 32.12 },
+            { name: "Robelle", callDials: 2145, talkTime: "4h52m33s", sms: 12229, allocation: 157, repaids: 43, repayment: 27.38 }
+        ]
+    },
+    week2: {
+        date: "September 12–16, 2026",
+        agents: [
+            { name: "Sherlyn", callDials: 697, talkTime: "35m55s", sms: 2660, allocation: 119, repaids: 24, repayment: 20.16 },
+            { name: "Robelle", callDials: 1146, talkTime: "2h14m30s", sms: 4724, allocation: 152, repaids: 29, repayment: 19.07 },
+            { name: "Rizza Julio", callDials: 1079, talkTime: "1h31m44s", sms: 7042, allocation: 143, repaids: 34, repayment: 23.77 },
+            { name: "Ralph", callDials: 1155, talkTime: "2h24m33s", sms: 6678, allocation: 146, repaids: 27, repayment: 18.49 },
+            { name: "Natalie", callDials: 1188, talkTime: "2h04m42s", sms: 5011, allocation: 155, repaids: 28, repayment: 18.06 },
+            { name: "Meliza", callDials: 1541, talkTime: "2h03m01s", sms: 6027, allocation: 157, repaids: 34, repayment: 21.65 },
+            { name: "Mary Angelyn", callDials: 1244, talkTime: "2h06m43s", sms: 5858, allocation: 163, repaids: 37, repayment: 22.69 },
+            { name: "Lovely Rose", callDials: 1154, talkTime: "2h15m22s", sms: 4807, allocation: 148, repaids: 33, repayment: 22.29 },
+            { name: "Joey Mae", callDials: 1019, talkTime: "1h18m06s", sms: 5170, allocation: 159, repaids: 39, repayment: 24.52 }
+        ]
+    },
+    week3: { date: "September 16–22, 2026", agents: [] },
+    week4: { date: "September 23–29, 2026", agents: [] }
+};
+
+const monthlyData = {
+    august: {
+        title: "Team Performance — August 2026",
+        agentTitle: "Agent Monthly Performance — August 2026",
+        date: "August 2026 Full Data",
+        team: [{ name: "Team A (Kurt)", cases: 2274, amount: 9319267.13, repaidCases: 811, repaidAmount: 3199035.61, rateCases: 35.66, rateAmount: 34.33 }],
+        agents: []
+    },
+    september: {
+        title: "Team Performance — September 2026",
+        agentTitle: "Agent Monthly Performance — September 1–16, 2026",
+        date: "September 1–16, 2026 Running Data",
+        team: [{ name: "Team A (Kurt)", cases: 1849, amount: 7719602.83, repaidCases: 593, repaidAmount: 2368739.02, rateCases: 32.07, rateAmount: 30.68 }],
+        agents: [
+            { name: "Sherlyn", cases: 141, amount: 569300.00, repaidCases: 58, repaidAmount: 234150.00, rateCases: 41.13, rateAmount: 41.13 },
+            { name: "Ralph", cases: 166, amount: 692800.00, repaidCases: 61, repaidAmount: 254500.00, rateCases: 36.74, rateAmount: 36.74 },
+            { name: "Joey Mae", cases: 166, amount: 695200.00, repaidCases: 60, repaidAmount: 251200.00, rateCases: 36.14, rateAmount: 36.14 },
+            { name: "Lovely Rose", cases: 170, amount: 712000.00, repaidCases: 60, repaidAmount: 251300.00, rateCases: 35.29, rateAmount: 35.29 },
+            { name: "Natalie", cases: 167, amount: 698500.00, repaidCases: 58, repaidAmount: 242600.00, rateCases: 34.73, rateAmount: 34.73 },
+            { name: "Gerleah", cases: 170, amount: 710500.00, repaidCases: 58, repaidAmount: 242400.00, rateCases: 34.11, rateAmount: 34.11 },
+            { name: "Rizza Julio", cases: 166, amount: 694000.00, repaidCases: 54, repaidAmount: 225800.00, rateCases: 32.53, rateAmount: 32.53 },
+            { name: "Mary Angelyn", cases: 114, amount: 476000.00, repaidCases: 37, repaidAmount: 154400.00, rateCases: 32.45, rateAmount: 32.45 },
+            { name: "Meliza", cases: 167, amount: 698000.00, repaidCases: 54, repaidAmount: 225700.00, rateCases: 32.33, rateAmount: 32.33 },
+            { name: "Edcell", cases: 165, amount: 689000.00, repaidCases: 53, repaidAmount: 221300.00, rateCases: 32.12, rateAmount: 32.12 },
+            { name: "Robelle", cases: 157, amount: 654300.00, repaidCases: 43, repaidAmount: 179200.00, rateCases: 27.38, rateAmount: 27.38 }
+        ]
+    },
+    october: { title: "Team Performance — October 2026", agentTitle: "Agent Monthly Performance — October 2026", date: "October 2026 — Upcoming Data", team: [], agents: [] },
+    november: { title: "Team Performance — November 2026", agentTitle: "Agent Monthly Performance — November 2026", date: "November 2026 — Upcoming Data", team: [], agents: [] },
+    december: { title: "Team Performance — December 2026", agentTitle: "Agent Monthly Performance — December 2026", date: "December 2026 — Upcoming Data", team: [], agents: [] }
+};
+
+function formatNumber(num) { return num.toLocaleString(); }
+function formatCurrency(num) { return "₱" + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function showSection(sectionId, btnElement) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    if (btnElement) btnElement.classList.add('active');
+}
+
+function renderWeekly() {
+    const selectedWeekKey = document.getElementById('weekSelector').value;
+    const week = weeklyData[selectedWeekKey];
+    document.getElementById('weekDate').innerText = week.date;
+    const tableBody = document.getElementById('weeklyTable');
+    tableBody.innerHTML = "";
+
+    if (!week.agents || week.agents.length === 0) {
+        document.getElementById('totalAgents').innerText = "0";
+        document.getElementById('totalDials').innerText = "0";
+        document.getElementById('totalSMS').innerText = "0";
+        document.getElementById('totalAllocation').innerText = "0";
+        document.getElementById('totalRepaids').innerText = "0";
+        tableBody.innerHTML = `<tr><td colspan="8" class="empty-week"><div class="icon">⏳</div><div>No performance data available for this week yet.</div></td></tr>`;
+        return;
+    }
+
+    const sortedAgents = [...week.agents].sort((a, b) => b.repayment - a.repayment);
+    let sumDials = 0, sumSMS = 0, sumAllocation = 0, sumRepaids = 0;
+
+    sortedAgents.forEach((agent, index) => {
+        sumDials += agent.callDials;
+        sumSMS += agent.sms;
+        sumAllocation += agent.allocation;
+        sumRepaids += agent.repaids;
+
+        const rank = index + 1;
+        let rankClass = rank === 1 ? "rank-1" : rank === 2 ? "rank-2" : rank === 3 ? "rank-3" : "";
+        const percentClass = agent.repayment >= 35 ? "percent-good" : "percent-low";
+
+        const tr = document.createElement('tr');
+        if (rankClass) tr.className = rankClass;
+
+        tr.innerHTML = `
+            <td>${rank}</td>
+            <td><strong>${agent.name}</strong></td>
+            <td>${formatNumber(agent.callDials)}</td>
+            <td>${agent.talkTime}</td>
+            <td>${formatNumber(agent.sms)}</td>
+            <td>${formatNumber(agent.allocation)}</td>
+            <td>${formatNumber(agent.repaids)}</td>
+            <td><span class="${percentClass}">${agent.repayment.toFixed(2)}%</span></td>
+        `;
+        tableBody.appendChild(tr);
+    });
+
+    document.getElementById('totalAgents').innerText = formatNumber(sortedAgents.length);
+    document.getElementById('totalDials').innerText = formatNumber(sumDials);
+    document.getElementById('totalSMS').innerText = formatNumber(sumSMS);
+    document.getElementById('totalAllocation').innerText = formatNumber(sumAllocation);
+    document.getElementById('totalRepaids').innerText = formatNumber(sumRepaids);
+}
+
+function renderMonthly() {
+    const selectedMonthKey = document.getElementById('monthSelector').value;
+    const month = monthlyData[selectedMonthKey];
+
+    document.getElementById('teamPerformanceTitle').innerText = month.title;
+    document.getElementById('agentPerformanceTitle').innerText = month.agentTitle;
+    document.getElementById('monthlyDate').innerText = month.date;
+
+    const teamTableBody = document.getElementById('teamMonthlyTable');
+    const agentTableBody = document.getElementById('monthlyTable');
+    teamTableBody.innerHTML = "";
+    agentTableBody.innerHTML = "";
+
+    if (!month.team || month.team.length === 0) {
+        teamTableBody.innerHTML = `<tr><td colspan="7" class="empty-week"><div>No team data available for this month.</div></td></tr>`;
+    } else {
+        month.team.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.style.fontWeight = "bold";
+            tr.innerHTML = `
+                <td>${item.name}</td>
+                <td>${formatNumber(item.cases)}</td>
+                <td>${formatCurrency(item.amount)}</td>
+                <td>${formatNumber(item.repaidCases)}</td>
+                <td>${formatCurrency(item.repaidAmount)}</td>
+                <td class="monthly-good">${item.rateCases.toFixed(2)}%</td>
+                <td class="monthly-good">${item.rateAmount.toFixed(2)}%</td>
+            `;
+            teamTableBody.appendChild(tr);
+        });
+    }
+
+    if (!month.agents || month.agents.length === 0) {
+        agentTableBody.innerHTML = `<tr><td colspan="8" class="empty-week"><div class="icon">📅</div><div>No agent data recorded for this month yet.</div></td></tr>`;
+    } else {
+        const sortedAgents = [...month.agents].sort((a, b) => b.rateAmount - a.rateAmount);
+        sortedAgents.forEach((agent, index) => {
+            const rank = index + 1;
+            let rankClass = rank === 1 ? "rank-1" : rank === 2 ? "rank-2" : rank === 3 ? "rank-3" : "";
+            const tr = document.createElement('tr');
+            if (rankClass) tr.className = rankClass;
+
+            const caseRateClass = agent.rateCases >= 35 ? "monthly-good" : "monthly-low";
+            const amountRateClass = agent.rateAmount >= 35 ? "monthly-good" : "monthly-low";
+
+            tr.innerHTML = `
+                <td>${rank}</td>
+                <td><strong>${agent.name}</strong></td>
+                <td>${formatNumber(agent.cases)}</td>
+                <td>${formatCurrency(agent.amount)}</td>
+                <td>${formatNumber(agent.repaidCases)}</td>
+                <td>${formatCurrency(agent.repaidAmount)}</td>
+                <td><span class="${caseRateClass}">${agent.rateCases.toFixed(2)}%</span></td>
+                <td><span class="${amountRateClass}">${agent.rateAmount.toFixed(2)}%</span></td>
+            `;
+            agentTableBody.appendChild(tr);
+        });
+    }
+}
+
+window.onload = function() {
+    renderWeekly();
+    renderMonthly();
+};
+</script>
+
+</body>
+</html>
