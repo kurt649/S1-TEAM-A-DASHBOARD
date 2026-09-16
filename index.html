@@ -1,613 +1,2076 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>S1 Team A Performance Dashboard</title>
+<title>S1 TEAM A PERFORMANCE DASHBOARD</title>
 
-    <style>
+<style>
 
-        /* =========================
-           GENERAL PAGE
-        ========================= */
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 30px;
-        }
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
 
-        h1 {
-            color: #1f4e78;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+/* =========================
+   HEADER
+========================= */
 
-        h2 {
-            color: #333333;
-            margin-top: 30px;
-        }
+.header {
+    background: linear-gradient(135deg, #111827, #1f2937);
+    color: white;
+    padding: 25px 35px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
 
-        /* =========================
-           WEEK SELECTOR
-           ========================= */
+.header h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
 
-        .week-selector {
-            margin: 20px 0;
-        }
+.header p {
+    margin: 8px 0 0;
+    color: #d1d5db;
+}
 
-        .week-selector label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
+/* =========================
+   NAVIGATION
+========================= */
 
-        .week-selector select {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #cccccc;
-            font-size: 14px;
-            background-color: white;
-        }
+.nav {
+    background: white;
+    display: flex;
+    gap: 8px;
+    padding: 12px 25px;
+    border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+}
 
-        /* =========================
-           KPI CARDS
-           ========================= */
+.nav button {
+    border: none;
+    background: #eef2f7;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #374151;
+    white-space: nowrap;
+}
 
-        .dashboard {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+.nav button:hover {
+    background: #dbe4f0;
+}
 
-        .card {
-            background-color: white;
-            width: 200px;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-            text-align: center;
-        }
+.nav button.active {
+    background: #111827;
+    color: white;
+}
 
-        .card h3 {
-            color: #666666;
-            font-size: 15px;
-            margin: 0;
-        }
+/* =========================
+   MAIN
+========================= */
 
-        .card p {
-            font-size: 28px;
-            font-weight: bold;
-            color: #1f4e78;
-            margin: 12px 0 0 0;
-        }
+.container {
+    padding: 25px;
+    max-width: 1600px;
+    margin: auto;
+}
 
-        /* =========================
-           TABLE
-           ========================= */
+.section {
+    display: none;
+}
 
-        .table-container {
-            overflow-x: auto;
-        }
+.section.active {
+    display: block;
+}
 
-        table {
-            width: 100%;
-            min-width: 950px;
-            border-collapse: collapse;
-            background-color: white;
-            margin-top: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
+/* =========================
+   TOP BAR
+========================= */
 
-        th {
-            background-color: #1f4e78;
-            color: white;
-            padding: 12px;
-            text-align: center;
-            white-space: nowrap;
-        }
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
 
-        td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #dddddd;
-            white-space: nowrap;
-        }
+.top-bar h2 {
+    margin: 0;
+}
 
-        tr:hover {
-            background-color: #f1f5f9;
-        }
+.week-selector {
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    font-weight: bold;
+}
 
-        /* =========================
-           RANK
-           ========================= */
+/* =========================
+   KPI CARDS
+========================= */
 
-        .rank {
-            font-weight: bold;
-        }
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
 
-        /* =========================
-           REPAYMENT COLORS
-           ========================= */
+.kpi {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+    border-left: 5px solid #111827;
+}
 
-        .good {
-            color: green;
-            font-weight: bold;
-        }
+.kpi-label {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
 
-        .low {
-            color: red;
-            font-weight: bold;
-        }
+.kpi-value {
+    font-size: 25px;
+    font-weight: bold;
+}
 
-        /* =========================
-           TOP PERFORMER
-           ========================= */
+/* =========================
+   CARDS
+========================= */
 
-        .top-performer {
-            background-color: #eaf7ea;
-        }
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
 
-    </style>
+.card h3 {
+    margin-top: 0;
+}
 
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+thead {
+    background: #111827;
+    color: white;
+}
+
+th,
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 14px;
+}
+
+th {
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+td:first-child,
+th:first-child {
+    text-align: center;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* =========================
+   RANK
+========================= */
+
+.rank-1 {
+    background: #fff8dc;
+    font-weight: bold;
+}
+
+.rank-1 td:first-child::before {
+    content: "🥇 ";
+}
+
+.rank-2 td:first-child::before {
+    content: "🥈 ";
+}
+
+.rank-3 td:first-child::before {
+    content: "🥉 ";
+}
+
+/* =========================
+   REPAYMENT
+========================= */
+
+.good {
+    color: #15803d;
+    font-weight: bold;
+}
+
+.low {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.percent-good {
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-weight: bold;
+}
+
+.percent-low {
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-weight: bold;
+}
+
+/* =========================
+   EMPTY WEEK
+========================= */
+
+.empty-week {
+    text-align: center;
+    padding: 70px 20px;
+    color: #6b7280;
+}
+
+.empty-week .icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   ANALYSIS
+========================= */
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.analysis-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.analysis-box h3 {
+    margin-top: 0;
+}
+
+.analysis-box ul {
+    line-height: 1.8;
+}
+
+/* =========================
+   BOTTOM REPORT
+========================= */
+
+.report-header {
+    background: #111827;
+    color: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.report-header h2 {
+    margin: 0 0 5px;
+}
+
+.report-table th {
+    background: #1f2937;
+}
+
+.bottom-team {
+    background: #fee2e2;
+}
+
+.bottom-team td {
+    font-weight: bold;
+}
+
+.note {
+    background: #fff7ed;
+    border-left: 5px solid #f97316;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+/* =========================
+   MONTHLY
+========================= */
+
+.monthly-table th {
+    background: #111827;
+}
+
+.monthly-good {
+    color: #15803d;
+    font-weight: bold;
+}
+
+.monthly-low {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .kpi-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
 </head>
-
 
 <body>
 
-    <!-- =========================
-         TITLE
-         ========================= -->
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
 
     <h1>S1 TEAM A PERFORMANCE DASHBOARD</h1>
 
+    <p>
+        Weekly & Monthly Collection Performance Monitoring
+    </p>
 
-    <!-- =========================
-         WEEK SELECTOR
-         ========================= -->
+</div>
 
-    <div class="week-selector">
 
-        <label for="week">Select Week:</label>
+<!-- =========================
+     NAVIGATION
+========================= -->
 
-        <select id="week">
+<div class="nav">
 
-            <option value="Week 1">Week 1</option>
-            <option value="Week 2">Week 2</option>
-            <option value="Week 3">Week 3</option>
-            <option value="Week 4">Week 4</option>
+    <button class="nav-btn active"
+            onclick="showSection('weekly', this)">
+        📊 Weekly Performance
+    </button>
+
+    <button class="nav-btn"
+            onclick="showSection('monthly', this)">
+        📅 Monthly Performance
+    </button>
+
+    <button class="nav-btn"
+            onclick="showSection('analysis', this)">
+        📈 Weekly Analysis
+    </button>
+
+    <button class="nav-btn"
+            onclick="showSection('bottom', this)">
+        🟥 Weekly Bottom Report
+    </button>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     WEEKLY PERFORMANCE
+===================================================== -->
+
+<section id="weekly" class="section active">
+
+    <div class="top-bar">
+
+        <div>
+
+            <h2>Weekly Performance</h2>
+
+            <div id="weekDate"
+                 style="color:#6b7280;margin-top:5px;">
+            </div>
+
+        </div>
+
+
+        <select id="weekSelector"
+                class="week-selector"
+                onchange="renderWeekly()">
+
+            <option value="week1">
+                Week 1 — September 5–11, 2026
+            </option>
+
+            <option value="week2">
+                Week 2 — September 12–16, 2026
+            </option>
+
+            <option value="week3">
+                Week 3 — September 16–22, 2026
+            </option>
+
+            <option value="week4">
+                Week 4 — September 23–29, 2026
+            </option>
 
         </select>
 
     </div>
 
 
-    <!-- =========================
-         KPI SUMMARY
-         ========================= -->
+    <!-- KPI -->
 
-    <h2>Team Summary</h2>
+    <div class="kpi-grid">
 
-    <div class="dashboard">
+        <div class="kpi">
 
-        <div class="card">
+            <div class="kpi-label">
+                Total Agents
+            </div>
 
-            <h3>Total Agents</h3>
-
-            <p id="totalAgents">11</p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>Total Call Dials</h3>
-
-            <p id="totalDials">0</p>
+            <div class="kpi-value"
+                 id="totalAgents">
+                0
+            </div>
 
         </div>
 
 
-        <div class="card">
+        <div class="kpi">
 
-            <h3>Total SMS</h3>
+            <div class="kpi-label">
+                Total Call Dials
+            </div>
 
-            <p id="totalSMS">0</p>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>Total Allocation</h3>
-
-            <p id="totalAllocation">0</p>
+            <div class="kpi-value"
+                 id="totalDials">
+                0
+            </div>
 
         </div>
 
 
-        <div class="card">
+        <div class="kpi">
 
-            <h3>Total Repaid</h3>
+            <div class="kpi-label">
+                Total SMS
+            </div>
 
-            <p id="totalRepaid">0</p>
+            <div class="kpi-value"
+                 id="totalSMS">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-label">
+                Total Allocation
+            </div>
+
+            <div class="kpi-value"
+                 id="totalAllocation">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi">
+
+            <div class="kpi-label">
+                Total Repaids
+            </div>
+
+            <div class="kpi-value"
+                 id="totalRepaids">
+                0
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- =========================
-         AGENT PERFORMANCE
-         ========================= -->
+    <!-- AGENT TABLE -->
 
-    <h2>Agent Performance</h2>
+    <div class="card">
 
-    <div class="table-container">
+        <h3>Agent Performance</h3>
 
-        <table id="agentTable">
+        <div class="table-wrapper">
 
-            <thead>
+            <table>
 
-                <tr>
+                <thead>
 
-                    <th>Rank</th>
+                    <tr>
 
-                    <th>Agent</th>
+                        <th>Rank</th>
 
-                    <th>Call Dials</th>
+                        <th>Agent</th>
 
-                    <th>Talk Time</th>
+                        <th>Call Dials</th>
 
-                    <th>SMS</th>
+                        <th>Talk Time</th>
 
-                    <th>Allocation</th>
+                        <th>SMS</th>
 
-                    <th>Repaids</th>
+                        <th>Allocation</th>
 
-                    <th>Repayment %</th>
+                        <th>Repaids</th>
 
-                </tr>
+                        <th>Repayment %</th>
 
-            </thead>
+                    </tr>
+
+                </thead>
+
+                <tbody id="weeklyTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
 
 
-            <tbody id="agentBody">
 
-            </tbody>
+<!-- =====================================================
+     MONTHLY PERFORMANCE
+===================================================== -->
 
-        </table>
+<section id="monthly" class="section">
+
+    <div class="top-bar">
+
+        <div>
+
+            <h2>Monthly Performance</h2>
+
+            <div style="color:#6b7280;margin-top:5px;">
+                S1 Team A — Monthly Collection Data
+            </div>
+
+        </div>
 
     </div>
 
 
-    <!-- =========================
-         JAVASCRIPT
-         ========================= -->
+    <div class="card">
 
-    <script>
+        <div class="table-wrapper">
 
-        /* =========================
-           ACTUAL TEAM DATA
-           ========================= */
+            <table class="monthly-table">
 
-        const teamData = [
+                <thead>
+
+                    <tr>
+
+                        <th>Rank</th>
+
+                        <th>Agent</th>
+
+                        <th>Total Cases</th>
+
+                        <th>Allocation Amount</th>
+
+                        <th>Repaid Cases</th>
+
+                        <th>Repaid Amount</th>
+
+                        <th>Collection Rate<br>Cases</th>
+
+                        <th>Collection Rate<br>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="monthlyTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WEEKLY ANALYSIS
+===================================================== -->
+
+<section id="analysis" class="section">
+
+    <div class="top-bar">
+
+        <div>
+
+            <h2>Weekly Analysis</h2>
+
+            <div style="color:#6b7280;margin-top:5px;">
+                Team A Performance Focus
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="analysis-grid">
+
+
+        <div class="analysis-box">
+
+            <h3>📞 Call Activity</h3>
+
+            <ul>
+
+                <li>
+                    Monitor daily call dials and talk time.
+                </li>
+
+                <li>
+                    Focus on meaningful client conversations.
+                </li>
+
+                <li>
+                    Maintain consistent calling activity.
+                </li>
+
+                <li>
+                    Give additional coaching to agents with low talk time.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="analysis-box">
+
+            <h3>💰 Collection Performance</h3>
+
+            <ul>
+
+                <li>
+                    Focus on repayment conversion.
+                </li>
+
+                <li>
+                    Monitor the bottom performers closely.
+                </li>
+
+                <li>
+                    Strengthen PTP conversion.
+                </li>
+
+                <li>
+                    Prioritize DPD 4–7 accounts.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="analysis-box">
+
+            <h3>📱 SMS Activity</h3>
+
+            <ul>
+
+                <li>
+                    Maintain consistent SMS blasts.
+                </li>
+
+                <li>
+                    Prioritize primary and secondary numbers.
+                </li>
+
+                <li>
+                    Monitor SMS response rate.
+                </li>
+
+                <li>
+                    Follow up on clients who respond.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="analysis-box">
+
+            <h3>👥 Attendance & Productivity</h3>
+
+            <ul>
+
+                <li>
+                    Strictly monitor attendance.
+                </li>
+
+                <li>
+                    Leave requests should be advised ahead of time.
+                </li>
+
+                <li>
+                    Sudden absences should be immediately communicated.
+                </li>
+
+                <li>
+                    Maintain productivity consistency throughout the week.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WEEKLY BOTTOM REPORT
+===================================================== -->
+
+<section id="bottom" class="section">
+
+    <div class="report-header">
+
+        <h2>🟥 Weekly Bottom Report</h2>
+
+        <div>
+            August 8–14, 2026
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Team Collection Performance</h3>
+
+        <div class="table-wrapper">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Rank</th>
+
+                        <th>Team Leader</th>
+
+                        <th>New Cases</th>
+
+                        <th>Principal & Interest</th>
+
+                        <th>Repaid Cases</th>
+
+                        <th>Repaid Amount</th>
+
+                        <th>Collection Rate<br>Cases</th>
+
+                        <th>Collection Rate<br>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>1</td>
+
+                        <td>Jackie</td>
+
+                        <td>2,334</td>
+
+                        <td>10,100,344.96</td>
+
+                        <td>890</td>
+
+                        <td>4,111,655.32</td>
+
+                        <td>38.13%</td>
+
+                        <td>40.71%</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>2</td>
+
+                        <td>Mayorca</td>
+
+                        <td>2,149</td>
+
+                        <td>9,193,574.42</td>
+
+                        <td>806</td>
+
+                        <td>3,317,652.96</td>
+
+                        <td>37.51%</td>
+
+                        <td>36.09%</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>3</td>
+
+                        <td>Karl</td>
+
+                        <td>2,208</td>
+
+                        <td>10,366,752.10</td>
+
+                        <td>916</td>
+
+                        <td>3,504,822.25</td>
+
+                        <td>36.38%</td>
+
+                        <td>33.03%</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>4</td>
+
+                        <td>Franz</td>
+
+                        <td>2,395</td>
+
+                        <td>9,825,809.75</td>
+
+                        <td>856</td>
+
+                        <td>3,334,066.81</td>
+
+                        <td>35.74%</td>
+
+                        <td>33.93%</td>
+
+                    </tr>
+
+
+                    <tr class="bottom-team">
+
+                        <td>5</td>
+
+                        <td>Kurt — Team A</td>
+
+                        <td>2,274</td>
+
+                        <td>9,319,267.13</td>
+
+                        <td>811</td>
+
+                        <td>3,199,035.61</td>
+
+                        <td>35.66%</td>
+
+                        <td>34.33%</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>-</td>
+
+                        <td>Jiro — Team F</td>
+
+                        <td>0</td>
+
+                        <td>0</td>
+
+                        <td>0</td>
+
+                        <td>0</td>
+
+                        <td>0.00%</td>
+
+                        <td>0.00%</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="note">
+
+            <strong>Team A Analysis:</strong><br><br>
+
+            Team A ranked 5th among the reporting teams
+            with collection data for the period.
+
+            The main areas for improvement are collection
+            conversion, attendance consistency, successful
+            client connections, meaningful talk time, and
+            repayment conversion.
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ACTIVITY -->
+
+    <div class="card">
+
+        <h3>Team Activity — August 8–14, 2026</h3>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Team</th>
+
+                        <th>Talk Time</th>
+
+                        <th>Outbound Dials</th>
+
+                        <th>Coverage</th>
+
+                        <th>SMS Reply</th>
+
+                        <th>Connection Rate</th>
+
+                        <th>SMS Sent</th>
+
+                        <th>SMS Success</th>
+
+                        <th>Attendance</th>
+
+                        <th>Active Agents</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr class="bottom-team">
+
+                        <td>Team A</td>
+
+                        <td>34h31m43s</td>
+
+                        <td>30,412</td>
+
+                        <td>241.40%</td>
+
+                        <td>1.39%</td>
+
+                        <td>3.52%</td>
+
+                        <td>118,939</td>
+
+                        <td>93.67%</td>
+
+                        <td>92.50%</td>
+
+                        <td>10</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team B</td>
+
+                        <td>26h31m8s</td>
+
+                        <td>31,818</td>
+
+                        <td>224.76%</td>
+
+                        <td>1.71%</td>
+
+                        <td>3.62%</td>
+
+                        <td>133,263</td>
+
+                        <td>85.07%</td>
+
+                        <td>97.75%</td>
+
+                        <td>10</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team C</td>
+
+                        <td>34h47m20s</td>
+
+                        <td>23,288</td>
+
+                        <td>144.03%</td>
+
+                        <td>1.69%</td>
+
+                        <td>3.60%</td>
+
+                        <td>115,234</td>
+
+                        <td>95.63%</td>
+
+                        <td>97.75%</td>
+
+                        <td>9</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team D</td>
+
+                        <td>39h4m14s</td>
+
+                        <td>32,028</td>
+
+                        <td>240.99%</td>
+
+                        <td>1.25%</td>
+
+                        <td>3.21%</td>
+
+                        <td>120,547</td>
+
+                        <td>93.83%</td>
+
+                        <td>94.74%</td>
+
+                        <td>10</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team E</td>
+
+                        <td>38h11m</td>
+
+                        <td>27,778</td>
+
+                        <td>218.36%</td>
+
+                        <td>1.03%</td>
+
+                        <td>3.23%</td>
+
+                        <td>116,270</td>
+
+                        <td>95.27%</td>
+
+                        <td>95.00%</td>
+
+                        <td>8</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ATTENDANCE -->
+
+    <div class="card">
+
+        <h3>Attendance Issues — August 8–14, 2026</h3>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Team</th>
+
+                        <th>Attendance Issues</th>
+
+                        <th>Total</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr class="bottom-team">
+
+                        <td>Team A</td>
+
+                        <td>
+                            Aug 8 — Piolo;<br>
+                            Aug 9 — Rizza / Edcell / Joey / Edisson
+                        </td>
+
+                        <td>5</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team B</td>
+
+                        <td>
+                            Aug 12 — Junell;<br>
+                            Aug 13 — Arianne;<br>
+                            Aug 14 — Marvin
+                        </td>
+
+                        <td>3</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team C</td>
+
+                        <td>
+                            Aug 10 — Louise
+                        </td>
+
+                        <td>1</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team D</td>
+
+                        <td>
+                            Aug 8 — Ron;<br>
+                            Aug 9 — Francis;<br>
+                            Aug 11 — Anclare HD;<br>
+                            Aug 12 — Christine
+                        </td>
+
+                        <td>4</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team E</td>
+
+                        <td>
+                            Aug 9 — Venus;<br>
+                            Aug 10 — Gerome;<br>
+                            Aug 14 — Chessie HD
+                        </td>
+
+                        <td>3</td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>Team F</td>
+
+                        <td>None</td>
+
+                        <td>0</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   WEEKLY DATA
+===================================================== */
+
+const weeklyData = {
+
+    /* =================================================
+       WEEK 1 — FINAL
+       SEPTEMBER 5–11, 2026
+    ================================================= */
+
+    week1: {
+
+        date: "September 5–11, 2026",
+
+        agents: [
 
             {
                 name: "Sherlyn",
-                dials: 2101,
+                callDials: 2101,
                 talkTime: "2h35m26s",
                 sms: 10445,
                 allocation: 141,
-                repaid: 58,
+                repaids: 58,
                 repayment: 41.13
             },
 
             {
                 name: "Ralph",
-                dials: 1894,
+                callDials: 1894,
                 talkTime: "2h29m22s",
                 sms: 7176,
                 allocation: 166,
-                repaid: 61,
+                repaids: 61,
                 repayment: 36.74
             },
 
             {
                 name: "Joey Mae",
-                dials: 2337,
+                callDials: 2337,
                 talkTime: "3h44m32s",
                 sms: 13331,
                 allocation: 166,
-                repaid: 60,
+                repaids: 60,
                 repayment: 36.14
             },
 
             {
                 name: "Lovely Rose",
-                dials: 2477,
+                callDials: 2477,
                 talkTime: "3h25m37s",
                 sms: 12369,
                 allocation: 170,
-                repaid: 60,
+                repaids: 60,
                 repayment: 35.29
             },
 
             {
                 name: "Natalie",
-                dials: 2065,
+                callDials: 2065,
                 talkTime: "4h16m12s",
                 sms: 11299,
                 allocation: 167,
-                repaid: 58,
+                repaids: 58,
                 repayment: 34.73
             },
 
             {
                 name: "Gerleah",
-                dials: 2874,
-                talkTime: "4h4m22s",
+                callDials: 2874,
+                talkTime: "4h04m22s",
                 sms: 11498,
                 allocation: 170,
-                repaid: 58,
+                repaids: 58,
                 repayment: 34.11
             },
 
             {
                 name: "Rizza Julio",
-                dials: 2433,
+                callDials: 2433,
                 talkTime: "1h38m20s",
                 sms: 5138,
                 allocation: 166,
-                repaid: 54,
+                repaids: 54,
                 repayment: 32.53
             },
 
             {
                 name: "Mary Angelyn",
-                dials: 3656,
+                callDials: 3656,
                 talkTime: "3h34m20s",
                 sms: 8757,
                 allocation: 114,
-                repaid: 37,
+                repaids: 37,
                 repayment: 32.45
             },
 
             {
                 name: "Meliza",
-                dials: 2310,
+                callDials: 2310,
                 talkTime: "3h21m59s",
                 sms: 10236,
                 allocation: 167,
-                repaid: 54,
+                repaids: 54,
                 repayment: 32.33
             },
 
             {
                 name: "Edcell",
-                dials: 2450,
+                callDials: 2450,
                 talkTime: "3h56m42s",
                 sms: 10812,
                 allocation: 165,
-                repaid: 53,
+                repaids: 53,
                 repayment: 32.12
             },
 
             {
                 name: "Robelle",
-                dials: 2145,
+                callDials: 2145,
                 talkTime: "4h52m33s",
                 sms: 12229,
                 allocation: 157,
-                repaid: 43,
+                repaids: 43,
                 repayment: 27.38
             }
 
-        ];
+        ]
+
+    },
 
 
-        /* =========================
-           DISPLAY DATA
-           ========================= */
+    /* =================================================
+       WEEK 2 — RUNNING DATA
+       SEPTEMBER 12–16, 2026
+    ================================================= */
 
-        function loadDashboard() {
+    week2: {
 
-            const tableBody =
-                document.getElementById("agentBody");
+        date: "September 12–16, 2026",
 
-            tableBody.innerHTML = "";
+        agents: [
 
+            {
+                name: "Sherlyn",
+                callDials: 697,
+                talkTime: "35m55s",
+                sms: 2660,
+                allocation: 119,
+                repaids: 24,
+                repayment: 20.16
+            },
 
-            /* SORT BY FINAL REPAYMENT % */
+            {
+                name: "Robelle",
+                callDials: 1146,
+                talkTime: "2h14m30s",
+                sms: 4724,
+                allocation: 152,
+                repaids: 29,
+                repayment: 19.07
+            },
 
-            const sortedAgents =
-                [...teamData].sort(
-                    (a, b) =>
-                        b.repayment - a.repayment
-                );
+            {
+                name: "Rizza Julio",
+                callDials: 1079,
+                talkTime: "1h31m44s",
+                sms: 7042,
+                allocation: 143,
+                repaids: 34,
+                repayment: 23.77
+            },
 
+            {
+                name: "Ralph",
+                callDials: 1155,
+                talkTime: "2h24m33s",
+                sms: 6678,
+                allocation: 146,
+                repaids: 27,
+                repayment: 18.49
+            },
 
-            /* =========================
-               CREATE TABLE ROWS
-               ========================= */
+            {
+                name: "Natalie",
+                callDials: 1188,
+                talkTime: "2h04m42s",
+                sms: 5011,
+                allocation: 155,
+                repaids: 28,
+                repayment: 18.06
+            },
 
-            sortedAgents.forEach(
-                function(agent, index) {
+            {
+                name: "Meliza",
+                callDials: 1541,
+                talkTime: "2h03m01s",
+                sms: 6027,
+                allocation: 157,
+                repaids: 34,
+                repayment: 21.65
+            },
 
-                    const row =
-                        document.createElement("tr");
+            {
+                name: "Mary Angelyn",
+                callDials: 1244,
+                talkTime: "2h06m43s",
+                sms: 5858,
+                allocation: 163,
+                repaids: 37,
+                repayment: 22.69
+            },
 
+            {
+                name: "Lovely Rose",
+                callDials: 1154,
+                talkTime: "2h15m22s",
+                sms: 4807,
+                allocation: 148,
+                repaids: 33,
+                repayment: 22.29
+            },
 
-                    /* TOP PERFORMER */
+            {
+                name: "Joey Mae",
+                callDials: 1019,
+                talkTime: "1h18m06s",
+                sms: 5170,
+                allocation: 159,
+                repaids: 39,
+                repayment: 24.52
+            },
 
-                    if (index === 0) {
+            {
+                name: "Gerleah",
+                callDials: 1427,
+                talkTime: "2h10m45s",
+                sms: 4955,
+                allocation: 149,
+                repaids: 33,
+                repayment: 22.14
+            },
 
-                        row.classList.add(
-                            "top-performer"
-                        );
+            {
+                name: "Edcell",
+                callDials: 1486,
+                talkTime: "2h31m46s",
+                sms: 5361,
+                allocation: 150,
+                repaids: 41,
+                repayment: 27.33
+            }
 
-                    }
+        ]
 
-
-                    /* REPAYMENT COLOR */
-
-                    const repaymentClass =
-                        agent.repayment >= 30
-                            ? "good"
-                            : "low";
-
-
-                    row.innerHTML = `
-
-                        <td class="rank">
-                            ${index + 1}
-                        </td>
-
-                        <td>
-                            <strong>
-                                ${agent.name}
-                            </strong>
-                        </td>
-
-                        <td>
-                            ${agent.dials.toLocaleString()}
-                        </td>
-
-                        <td>
-                            ${agent.talkTime}
-                        </td>
-
-                        <td>
-                            ${agent.sms.toLocaleString()}
-                        </td>
-
-                        <td>
-                            ${agent.allocation.toLocaleString()}
-                        </td>
-
-                        <td>
-                            ${agent.repaid.toLocaleString()}
-                        </td>
-
-                        <td class="${repaymentClass}">
-                            ${agent.repayment.toFixed(2)}%
-                        </td>
-
-                    `;
-
-
-                    tableBody.appendChild(row);
-
-                }
-            );
-
-
-            /* =========================
-               TEAM TOTALS
-               ========================= */
-
-            const totalDials =
-                teamData.reduce(
-                    (sum, agent) =>
-                        sum + agent.dials,
-                    0
-                );
-
-
-            const totalSMS =
-                teamData.reduce(
-                    (sum, agent) =>
-                        sum + agent.sms,
-                    0
-                );
-
-
-            const totalAllocation =
-                teamData.reduce(
-                    (sum, agent) =>
-                        sum + agent.allocation,
-                    0
-                );
-
-
-            const totalRepaid =
-                teamData.reduce(
-                    (sum, agent) =>
-                        sum + agent.repaid,
-                    0
-                );
+    },
 
 
-            /* =========================
-               UPDATE KPI CARDS
-               ========================= */
+    /* =================================================
+       WEEK 3
+    ================================================= */
 
-            document.getElementById(
-                "totalAgents"
-            ).textContent =
-                teamData.length;
+    week3: {
 
+        date: "September 16–22, 2026",
 
-            document.getElementById(
-                "totalDials"
-            ).textContent =
-                totalDials.toLocaleString();
+        agents: []
+
+    },
 
 
-            document.getElementById(
-                "totalSMS"
-            ).textContent =
-                totalSMS.toLocaleString();
+    /* =================================================
+       WEEK 4
+    ================================================= */
+
+    week4: {
+
+        date: "September 23–29, 2026",
+
+        agents: []
+
+    }
+
+};
 
 
-            document.getElementById(
-                "totalAllocation"
-            ).textContent =
-                totalAllocation.toLocaleString();
+/* =====================================================
+   MONTHLY DATA
+===================================================== */
+
+const monthlyData = [
+
+    {
+        name: "Sherlyn",
+        cases: 303,
+        allocation: 1248532.84,
+        repaidCases: 112,
+        repaidAmount: 501317.32,
+        casesRate: 36.96,
+        amountRate: 40.15
+    },
+
+    {
+        name: "Lovely Rose",
+        cases: 392,
+        allocation: 1602501.57,
+        repaidCases: 131,
+        repaidAmount: 515405.62,
+        casesRate: 33.41,
+        amountRate: 32.16
+    },
+
+    {
+        name: "Edcell",
+        cases: 385,
+        allocation: 1529815.45,
+        repaidCases: 128,
+        repaidAmount: 492535.89,
+        casesRate: 33.24,
+        amountRate: 32.19
+    },
+
+    {
+        name: "Joey Mae",
+        cases: 394,
+        allocation: 1499830.93,
+        repaidCases: 131,
+        repaidAmount: 511598.13,
+        casesRate: 33.24,
+        amountRate: 34.11
+    },
+
+    {
+        name: "Gerleah",
+        cases: 388,
+        allocation: 1520748.28,
+        repaidCases: 127,
+        repaidAmount: 471703.31,
+        casesRate: 32.73,
+        amountRate: 31.01
+    },
+
+    {
+        name: "Ralph",
+        cases: 382,
+        allocation: 1582286.61,
+        repaidCases: 124,
+        repaidAmount: 429599.33,
+        casesRate: 32.46,
+        amountRate: 27.15
+    },
+
+    {
+        name: "Rizza Julio",
+        cases: 381,
+        allocation: 1557724.04,
+        repaidCases: 120,
+        repaidAmount: 428170.27,
+        casesRate: 31.49,
+        amountRate: 27.48
+    },
+
+    {
+        name: "Natalie",
+        cases: 385,
+        allocation: 1600682.90,
+        repaidCases: 112,
+        repaidAmount: 470013.17,
+        casesRate: 29.09,
+        amountRate: 29.36
+    },
+
+    {
+        name: "Meliza",
+        cases: 396,
+        allocation: 1574639.38,
+        repaidCases: 114,
+        repaidAmount: 535433.91,
+        casesRate: 28.78,
+        amountRate: 34.00
+    },
+
+    {
+        name: "Mary Angelyn",
+        cases: 245,
+        allocation: 1020429.33,
+        repaidCases: 69,
+        repaidAmount: 338004.58,
+        casesRate: 28.16,
+        amountRate: 33.12
+    },
+
+    {
+        name: "Robelle",
+        cases: 375,
+        allocation: 1489916.76,
+        repaidCases: 101,
+        repaidAmount: 411523.63,
+        casesRate: 26.93,
+        amountRate: 27.62
+    }
+
+];
 
 
-            document.getElementById(
-                "totalRepaid"
-            ).textContent =
-                totalRepaid.toLocaleString();
+/* =====================================================
+   NAVIGATION
+===================================================== */
 
+function showSection(sectionId, button) {
+
+    document
+        .querySelectorAll(".section")
+        .forEach(section => {
+            section.classList.remove("active");
+        });
+
+
+    document
+        .getElementById(sectionId)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+
+    button.classList.add("active");
+
+}
+
+
+/* =====================================================
+   FORMAT NUMBER
+===================================================== */
+
+function formatNumber(number) {
+
+    return number.toLocaleString("en-US");
+
+}
+
+
+/* =====================================================
+   WEEKLY RENDER
+===================================================== */
+
+function renderWeekly() {
+
+    const selectedWeek =
+        document.getElementById("weekSelector").value;
+
+
+    const data =
+        weeklyData[selectedWeek];
+
+
+    document.getElementById("weekDate").textContent =
+        data.date;
+
+
+    const table =
+        document.getElementById("weeklyTable");
+
+
+    table.innerHTML = "";
+
+
+    /* EMPTY WEEK */
+
+    if (data.agents.length === 0) {
+
+        document.getElementById("totalAgents").textContent = "0";
+
+        document.getElementById("totalDials").textContent = "0";
+
+        document.getElementById("totalSMS").textContent = "0";
+
+        document.getElementById("totalAllocation").textContent = "0";
+
+        document.getElementById("totalRepaids").textContent = "0";
+
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty-week">
+
+                        <div class="icon">
+                            📊
+                        </div>
+
+                        <h3>
+                            No Data Yet
+                        </h3>
+
+                        <p>
+                            Data for ${data.date}
+                            has not been entered yet.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* SORT BY FINAL REPAYMENT % */
+
+    const agents =
+        [...data.agents]
+        .sort((a, b) =>
+            b.repayment - a.repayment
+        );
+
+
+    /* TOTALS */
+
+    let totalDials = 0;
+
+    let totalSMS = 0;
+
+    let totalAllocation = 0;
+
+    let totalRepaids = 0;
+
+
+    agents.forEach(agent => {
+
+        totalDials += agent.callDials;
+
+        totalSMS += agent.sms;
+
+        totalAllocation += agent.allocation;
+
+        totalRepaids += agent.repaids;
+
+    });
+
+
+    document.getElementById("totalAgents").textContent =
+        agents.length;
+
+
+    document.getElementById("totalDials").textContent =
+        formatNumber(totalDials);
+
+
+    document.getElementById("totalSMS").textContent =
+        formatNumber(totalSMS);
+
+
+    document.getElementById("totalAllocation").textContent =
+        formatNumber(totalAllocation);
+
+
+    document.getElementById("totalRepaids").textContent =
+        formatNumber(totalRepaids);
+
+
+    /* TABLE */
+
+    agents.forEach((agent, index) => {
+
+        const rank = index + 1;
+
+
+        const row =
+            document.createElement("tr");
+
+
+        if (rank === 1) {
+            row.classList.add("rank-1");
+        }
+
+        if (rank === 2) {
+            row.classList.add("rank-2");
+        }
+
+        if (rank === 3) {
+            row.classList.add("rank-3");
         }
 
 
-        /* =========================
-           INITIAL LOAD
-           ========================= */
+        const repaymentClass =
+            agent.repayment >= 30
+            ? "percent-good"
+            : "percent-low";
 
-        loadDashboard();
+
+        row.innerHTML = `
+
+            <td>
+                ${rank}
+            </td>
+
+            <td>
+                <strong>${agent.name}</strong>
+            </td>
+
+            <td>
+                ${formatNumber(agent.callDials)}
+            </td>
+
+            <td>
+                ${agent.talkTime}
+            </td>
+
+            <td>
+                ${formatNumber(agent.sms)}
+            </td>
+
+            <td>
+                ${formatNumber(agent.allocation)}
+            </td>
+
+            <td>
+                ${formatNumber(agent.repaids)}
+            </td>
+
+            <td>
+                <span class="${repaymentClass}">
+                    ${agent.repayment.toFixed(2)}%
+                </span>
+            </td>
+
+        `;
 
 
-        /* =========================
-           WEEK SELECTOR
-           ========================= */
+        table.appendChild(row);
 
-        document.getElementById(
-            "week"
-        ).addEventListener(
-            "change",
-            function() {
+    });
 
-                /*
-                 For now, Week 1 contains
-                 the actual data you provided.
+}
 
-                 We will add Week 2, Week 3,
-                 and Week 4 data later.
-                */
 
-                loadDashboard();
+/* =====================================================
+   MONTHLY RENDER
+===================================================== */
 
-            }
+function renderMonthly() {
+
+    const table =
+        document.getElementById("monthlyTable");
+
+
+    table.innerHTML = "";
+
+
+    const sorted =
+        [...monthlyData]
+        .sort((a, b) =>
+            b.casesRate - a.casesRate
         );
 
-    </script>
+
+    sorted.forEach((agent, index) => {
+
+        const rank = index + 1;
+
+
+        const row =
+            document.createElement("tr");
+
+
+        if (rank === 1) {
+            row.classList.add("rank-1");
+        }
+
+        if (rank === 2) {
+            row.classList.add("rank-2");
+        }
+
+        if (rank === 3) {
+            row.classList.add("rank-3");
+        }
+
+
+        const casesClass =
+            agent.casesRate >= 30
+            ? "monthly-good"
+            : "monthly-low";
+
+
+        row.innerHTML = `
+
+            <td>
+                ${rank}
+            </td>
+
+            <td>
+                <strong>${agent.name}</strong>
+            </td>
+
+            <td>
+                ${formatNumber(agent.cases)}
+            </td>
+
+            <td>
+                ₱${agent.allocation.toLocaleString(
+                    "en-US",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}
+            </td>
+
+            <td>
+                ${formatNumber(agent.repaidCases)}
+            </td>
+
+            <td>
+                ₱${agent.repaidAmount.toLocaleString(
+                    "en-US",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}
+            </td>
+
+            <td class="${casesClass}">
+                ${agent.casesRate.toFixed(2)}%
+            </td>
+
+            <td class="monthly-good">
+                ${agent.amountRate.toFixed(2)}%
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+renderWeekly();
+
+renderMonthly();
+
+</script>
 
 </body>
-
 </html>
