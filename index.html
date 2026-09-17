@@ -1409,6 +1409,17 @@ tbody tr:hover {
 
 
 <script>
+const API_URL = "https://script.googleusercontent.com/a/macros/pesoloan.ph/echo?user_content_key=AUkAhnSM0iSQSKNXQgJFa5nY7qYbeHm8bZ3hcNQ-_BrzAtkE_ToOxvLKL-9FyAWDFJniW9mMgOSZRuEBFC0B2B2xt20zm3CvYbj1w_9qnzTk3JpgSwKTMF_d5sUxXEYKt0DaYEr8UQsrvnVc9uVXHkKzNfogcZ9vFlv37HT6gOWKUzplVGqDhBAA2no6En0fvvc6OjlXNla32RS37YAalc4wJ2qrXoeEypIKSzcIVXqP874G0PH2h1SAB7X_1DaKIG5C45T4l9r6SlhryIgl3GI1pQYrb0KaJeJrJpPwRfK3&lib=MHIZ2IwKXRVv_pV58aPmwAgGRwl08Uqru";
+fetch(API_URL)
+    .then(response => response.json())
+    .then(data => {
+        console.log("GOOGLE SHEET DATA:", data);
+    })
+    .catch(error => {
+        console.error("GOOGLE SHEET ERROR:", error);
+    });
+
+
 
 /* =====================================================
    WEEKLY DATA
